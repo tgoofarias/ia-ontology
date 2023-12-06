@@ -1,6 +1,6 @@
 from owlready2 import *
 
-onto = get_ontology("http://www.example.org/teste.owl")
+onto = get_ontology("http://www.example.org/onto.owl")
 
 '''
 1. **Definir Classes:**
@@ -57,9 +57,24 @@ livro1.ehDaCategoria.append(categoria1)
    - Salve a ontologia em um arquivo e carregue-a novamente para garantir que o processo de serialização e desserialização funcione corretamente.
 '''
 
-onto.save("teste.owl", format="rdfxml")
+onto.save("onto.owl", format="rdfxml")
 
 '''
 7. **Consulta Dinâmica:**
    - Modifique a ontologia dinamicamente adicionando um novo livro, autor ou categoria e faça consultas para verificar se as alterações foram refletidas corretamente.
 '''
+
+onto = get_ontology("onto.owl").load()
+
+autor2 = Autor("Alice")
+livro2 = Livro("Machine Learning 101")
+categoria2 = Categoria("Ciência de Dados")
+
+livro2.escritoPor.append(autor2)
+livro2.ehDaCategoria.append(categoria2)
+
+print()
+for livro in onto.Livro.instances():
+    print(f"{livro.name} foi escrito por {livro.escritoPor[0].name}")
+    print(f"{livro.name} eh um livro de {livro.ehDaCategoria[0].name}")
+    print()
